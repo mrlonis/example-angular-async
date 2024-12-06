@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="1.034" tests="1" failures="0">
-  <testsuite name="Root Suite" timestamp="2024-12-06T02:23:44" tests="0" file="cypress/e2e/app.cy.ts" time="0.000" failures="0">
+<testsuites name="Mocha Tests" time="11.035" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2024-12-06T03:01:51" tests="0" file="cypress/e2e/app.cy.ts" time="0.000" failures="0">
   </testsuite>
-  <testsuite name="example-angular-async" timestamp="2024-12-06T02:23:44" tests="1" time="1.032" failures="0">
-    <testcase name="example-angular-async should load" time="1.012" classname="should load">
+  <testsuite name="example-angular-async" timestamp="2024-12-06T03:01:51" tests="2" time="11.033" failures="0">
+    <testcase name="example-angular-async should eslint error if the comment is removed" time="0.910" classname="should eslint error if the comment is removed">
+    </testcase>
+    <testcase name="example-angular-async should load" time="10.086" classname="should load">
     </testcase>
   </testsuite>
 </testsuites>
