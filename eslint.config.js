@@ -65,8 +65,18 @@ module.exports = tseslint.config(
           style: 'kebab-case',
         },
       ],
+      '@angular-eslint/prefer-standalone': 'error',
+      '@angular-eslint/sort-lifecycle-methods': 'error',
       '@typescript-eslint/no-deprecated': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-restricted-types': [
+        'error',
+        {
+          types: {
+            Promise: 'Promise is not allowed, use Observable instead',
+          },
+        },
+      ],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -77,7 +87,9 @@ module.exports = tseslint.config(
       ],
       'import/newline-after-import': ['error', { count: 1 }],
       'import/no-absolute-path': 'error',
+      'import/no-cycle': 'error',
       'import/no-deprecated': 'error',
+      'import/no-self-import': 'error',
       'import/no-unresolved': 'error',
       'import/no-useless-path-segments': [
         'error',
@@ -151,6 +163,14 @@ module.exports = tseslint.config(
       '@angular-eslint/sort-lifecycle-methods': 'error',
       '@typescript-eslint/no-deprecated': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-restricted-types': [
+        'error',
+        {
+          types: {
+            Promise: 'Promise is not allowed, use Observable instead',
+          },
+        },
+      ],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
