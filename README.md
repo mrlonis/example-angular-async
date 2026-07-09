@@ -13,7 +13,7 @@ npm run ng -- update @angular/core@latest @angular/cli@latest @angular/material@
 For example, to update to v22:
 
 ```shell
-npm run ng -- update @angular/core@21 @angular/cli@21 @angular/material@21 angular-eslint@21
+npm run ng -- update @angular/core@22 @angular/cli@22 @angular/material@22 angular-eslint@22
 ```
 
 ## Development server
