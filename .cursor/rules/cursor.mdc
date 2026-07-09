@@ -11,6 +11,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 Single-page Angular v22 demo app demonstrating async patterns with sequential and parallel HTTP calls. Angular Material + CDK v22, TypeScript 6 (strict), npm (Node version pinned in `.nvmrc`). A single route is defined in `src/app/app.routes.ts`; providers in `src/app/app.config.ts`; root component is `src/app/app.component.ts`.
 
 The app demonstrates a specific async loading sequence:
+
 1. `AppComponent.ngOnInit()` first awaits `FakeApiService.fakeApiCall1()` (`/api/fake1`).
 2. Once that resolves, it fires calls 2–5 in parallel via `Promise.all(...)`.
 3. The template shows a `.loading` paragraph until all 5 calls complete, then switches to `.loading-done`. A `.ng-on-init-done` paragraph appears as soon as `ngOnInit` finishes (after call 1 but while 2–5 are still in-flight).
