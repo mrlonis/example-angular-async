@@ -2,19 +2,25 @@ import { FakeModel } from '../../src/app/model';
 
 describe('example-angular-async', () => {
   beforeEach(() => {
-    cy.intercept({ method: 'GET', url: '/api/fake1' }, { body: { fake: 'fake1' } as FakeModel }).as('fake1');
-    cy.intercept({ method: 'GET', url: '/api/fake2' }, { body: { fake: 'fake2' } as FakeModel, delay: 10000 }).as(
-      'fake2',
+    cy.intercept({ method: 'GET', url: '/api/fake1' }, { body: { fake: 'fake1' } as FakeModel }).as(
+      'fake1',
     );
-    cy.intercept({ method: 'GET', url: '/api/fake3' }, { body: { fake: 'fake3' } as FakeModel, delay: 10000 }).as(
-      'fake3',
-    );
-    cy.intercept({ method: 'GET', url: '/api/fake4' }, { body: { fake: 'fake4' } as FakeModel, delay: 10000 }).as(
-      'fake4',
-    );
-    cy.intercept({ method: 'GET', url: '/api/fake5' }, { body: { fake: 'fake5' } as FakeModel, delay: 10000 }).as(
-      'fake5',
-    );
+    cy.intercept(
+      { method: 'GET', url: '/api/fake2' },
+      { body: { fake: 'fake2' } as FakeModel, delay: 10000 },
+    ).as('fake2');
+    cy.intercept(
+      { method: 'GET', url: '/api/fake3' },
+      { body: { fake: 'fake3' } as FakeModel, delay: 10000 },
+    ).as('fake3');
+    cy.intercept(
+      { method: 'GET', url: '/api/fake4' },
+      { body: { fake: 'fake4' } as FakeModel, delay: 10000 },
+    ).as('fake4');
+    cy.intercept(
+      { method: 'GET', url: '/api/fake5' },
+      { body: { fake: 'fake5' } as FakeModel, delay: 10000 },
+    ).as('fake5');
     cy.visit('/');
   });
 
