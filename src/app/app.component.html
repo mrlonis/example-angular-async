@@ -1,8 +1,8 @@
-@if (!loading) {
+@if (!loading()) {
   <p class="loading-done">Done Loading</p>
 } @else {
   <p class="loading">Loading...</p>
 }
-@if (ngOnInitDone) {
+@if (ngOnInitDone()) {
   <p class="ng-on-init-done">ngOnInit Done</p>
 }
