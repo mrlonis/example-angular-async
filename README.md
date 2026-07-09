@@ -2,6 +2,20 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
 
+## Updating Angular
+
+To update Angular, run the following command, replacing `VERSION` with the version you want to update to:
+
+```shell
+npm run ng -- update @angular/core@latest @angular/cli@latest @angular/material@latest angular-eslint@latest
+```
+
+For example, to update to v22:
+
+```shell
+npm run ng -- update @angular/core@20 @angular/cli@20 @angular/material@20 angular-eslint@20
+```
+
 ## Development server
 
 To start a local development server, run:
