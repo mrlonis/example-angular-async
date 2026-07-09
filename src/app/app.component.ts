@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { FakeModel } from './model';
 import { FakeApiService } from './services';
@@ -9,11 +9,11 @@ import { FakeApiService } from './services';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
+  private readonly api = inject(FakeApiService);
+
   loading = true;
   api1?: FakeModel;
   ngOnInitDone = false;
-
-  constructor(private readonly api: FakeApiService) {}
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   async ngOnInit() {
