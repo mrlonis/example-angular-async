@@ -2,26 +2,28 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Project Overview
 
-Single-page Angular v22 demo app. Angular Material + CDK v22, TypeScript 6 (strict), npm (Node version pinned in `.nvmrc`). Two lazy-loaded routes defined in `src/app/app.routes.ts`; providers in `src/app/app.config.ts`; root component `src/app/app.ts` renders `<router-outlet />`.
+Single-page Angular v22 demo app demonstrating async patterns with sequential and parallel HTTP calls. Angular Material + CDK v22, TypeScript 6 (strict), npm (Node version pinned in `.nvmrc`). A single route is defined in `src/app/app.routes.ts`; providers in `src/app/app.config.ts`; root component is `src/app/app.component.ts`.
 
-- `''` → `MatTabs` (`pages/mat-tabs`): tabs hosting `MatTable` (periodic-elements Material table: sort, filter, paginate, expandable rows, column picker) and `ExampleIframe` (`iframe-resizer` demo).
-- `'toolbar'` → `MatToolbar` (`pages/mat-toolbar`): toolbar with a `mat-drawer` sidenav.
+The app demonstrates a specific async loading sequence:
+
+1. `AppComponent.ngOnInit()` first awaits `FakeApiService.fakeApiCall1()` (`/api/fake1`).
+2. Once that resolves, it fires calls 2–5 in parallel via `Promise.all(...)`.
+3. The template shows a `.loading` paragraph until all 5 calls complete, then switches to `.loading-done`. A `.ng-on-init-done` paragraph appears as soon as `ngOnInit` finishes (after call 1 but while 2–5 are still in-flight).
 
 ## Repository Map
 
-- `src/app/pages/<name>/` — route-level ("page") components loaded lazily from `app.routes.ts`.
-- `src/app/components/<name>/` — reusable components used across pages. Components are standalone, laid out as `<name>.{ts,html,scss,spec.ts}`.
-- `src/app/services/` — signal-based singletons (`selected-page`, `url-cache`), `providedIn: 'root'`.
-- `src/app/directives/` — `iframe-resizer` attribute directive (`[appIframeResizer]`).
-- `src/app/interfaces/` — types and periodic-element data (`data.ts`).
-- `tests/` — Playwright end-to-end specs and config.
+- `src/app/app.component.{ts,html,scss,spec.ts}` — root component; owns all async logic and loading state (signals).
+- `src/app/app.config.ts` — `ApplicationConfig` with `provideHttpClient()`, `provideRouter()`.
+- `src/app/app.routes.ts` — single route `''` → `AppComponent`.
+- `src/app/model/fake-model.ts` — `FakeModel` interface (`{ fake?: string }`). Re-exported from `src/app/model/index.ts`.
+- `src/app/services/fake-api.service.ts` — `FakeApiService` with 5 `HttpClient.get()` methods for `/api/fake1`–`/api/fake5`. Re-exported from `src/app/services/index.ts`.
+- `tests/` — Playwright end-to-end specs (`app.spec.ts`) and config (`playwright.config.ts`).
 - `agent-instructions/source.md` — edit this, then sync (see below). Do not edit generated files directly.
 - `scripts/sync-agent-instructions.mjs` — generator for the AI instruction files.
 
 ## Conventions
 
-- Put route-level components (one per route) in `src/app/pages/`; put components reused across pages in `src/app/components/`.
-- File names have no `.component`/`.service`/`.directive` suffix (Angular v20+ style): e.g. `mat-table.ts`, `url-cache.ts`.
+- File names use no `.component`/`.service`/`.directive` suffix for new files (Angular v20+ style).
 - New components default to SCSS and external templates/styles.
 - The generated instruction files (`AGENTS.md`, `.claude/CLAUDE.md`, etc.) are copies of this source — to change guidance, edit `agent-instructions/source.md` and re-sync (see below), never edit the copies.
 
@@ -115,7 +117,8 @@ Single-page Angular v22 demo app. Angular Material + CDK v22, TypeScript 6 (stri
 - This project uses `vitest` (v4) for unit testing. Write and update unit tests using Vitest APIs and patterns.
 - When running tests, prefer scoped commands that target only the changed project or spec file.
 - Example:
-  - To run tests for just the `/src/app/app.spec.ts` file: `npm run test:unit -- --include src/app/app.spec.ts`
+  - To run tests for just the `AppComponent`: `npm run test:unit -- --include src/app/app.component.spec.ts`
+  - To run tests for just the `FakeApiService`: `npm run test:unit -- --include src/app/services/fake-api.service.spec.ts`
 - Place tests close to the code they verify, and keep test setup focused on behavior rather than implementation details.
 - Prefer clear Arrange-Act-Assert structure with descriptive test names that document expected behavior.
 - Cover happy paths, edge cases, and error handling for components, services, and utility functions.
