@@ -8,13 +8,27 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Project Overview
 
-Single-page Angular v22 demo app demonstrating async patterns with sequential and parallel HTTP calls. Angular Material + CDK v22, TypeScript 6 (strict), npm (Node version pinned in `.nvmrc`). A single route is defined in `src/app/app.routes.ts`; providers in `src/app/app.config.ts`; root component is `src/app/app.component.ts`.
+Single-page Angular v22 demo app that **intentionally demonstrates why making Angular lifecycle methods `async` is an anti-pattern**. Angular Material + CDK v22, TypeScript 6 (strict), npm (Node version pinned in `.nvmrc`). A single route is defined in `src/app/app.routes.ts`; providers in `src/app/app.config.ts`; root component is `src/app/app.component.ts`.
 
-The app demonstrates a specific async loading sequence:
+The core thesis (explained in detail in `README.md`): Angular does not await async lifecycle hooks. Declaring `ngOnInit()` as `async` creates a misleading pattern where `await` appears to pause the component lifecycle, but it only pauses the async function itself — Angular moves on immediately.
 
-1. `AppComponent.ngOnInit()` first awaits `FakeApiService.fakeApiCall1()` (`/api/fake1`).
-2. Once that resolves, it fires calls 2–5 in parallel via `Promise.all(...)`.
-3. The template shows a `.loading` paragraph until all 5 calls complete, then switches to `.loading-done`. A `.ng-on-init-done` paragraph appears as soon as `ngOnInit` finishes (after call 1 but while 2–5 are still in-flight).
+The app demonstrates this with a deliberate broken sequence in `AppComponent.ngOnInit()`:
+
+1. `ngOnInit()` is declared `async` and `await`s `FakeApiService.fakeApiCall1()` (`/api/fake1`).
+2. Once that resolves, it fires calls 2–5 in parallel via `Promise.all(...)` (without awaiting it at the function level).
+3. The template shows a `.loading` paragraph until all 5 calls complete, then switches to `.loading-done`. A `.ng-on-init-done` paragraph appears as soon as `ngOnInit` returns (after call 1, while calls 2–5 are still in-flight), proving Angular did not wait.
+
+## Demo Preservation Rules ⚠️
+
+**Do not refactor or "fix" `AppComponent`'s async patterns.** The broken code is the entire point of the demo.
+
+- **Do NOT** make `ngOnInit()` non-async, remove `await` calls, or restructure the loading logic into a correct pattern. This would destroy what the app is demonstrating.
+- **Do NOT** remove the `eslint-disable` comments in `app.component.ts`. They are intentional, necessary exceptions that allow the anti-pattern to compile for demonstration purposes:
+  - `@typescript-eslint/no-misused-promises` — suppressed so `async ngOnInit()` is allowed.
+  - `@angular-eslint/no-async-lifecycle-method` — suppressed so the async lifecycle method is allowed.
+  - `@typescript-eslint/no-floating-promises` — suppressed for the unawaited `Promise.all(...)`.
+- The "Never disable ESLint rules" linting guideline applies to all other files; `app.component.ts` is the sole intentional exception.
+- Refer to `README.md` for the full explanation of the anti-pattern and recommended alternatives.
 
 ## Repository Map
 
