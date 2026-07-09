@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FakeModel } from '../model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FakeApiService {
-  constructor(private readonly http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   fakeApiCall1() {
     return this.http.get<FakeModel>('/api/fake1');

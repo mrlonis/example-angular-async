@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { FakeModel } from './model';
 import { FakeApiService } from './services';
@@ -9,21 +9,26 @@ import { FakeApiService } from './services';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  loading = true;
+  private readonly api = inject(FakeApiService);
+
+  readonly loading = signal(true);
   api1?: FakeModel;
-  ngOnInitDone = false;
+  readonly ngOnInitDone = signal(false);
 
-  constructor(private readonly api: FakeApiService) {}
-
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises, @angular-eslint/no-async-lifecycle-method
   async ngOnInit() {
     console.log('Calling fake API 1');
     await this.callFakeApi1();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    Promise.all([this.callFakeApi2(), this.callFakeApi3(), this.callFakeApi4(), this.callFakeApi5()]).then(() => {
-      this.loading = false;
+    Promise.all([
+      this.callFakeApi2(),
+      this.callFakeApi3(),
+      this.callFakeApi4(),
+      this.callFakeApi5(),
+    ]).then(() => {
+      this.loading.set(false);
     });
-    this.ngOnInitDone = true;
+    this.ngOnInitDone.set(true);
   }
 
   async callFakeApi1() {
